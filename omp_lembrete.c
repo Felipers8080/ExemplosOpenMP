@@ -25,7 +25,7 @@ struct Medicacao{
 void Lembrete(void* medicacao);
 
 int main(int argc, char* argv[]) {
-   int thread_count = 4;
+   
    struct Medicacao *m1, *m2, *m3, *m4;
    
    // Medicação 1
@@ -54,7 +54,8 @@ int main(int argc, char* argv[]) {
    printf("Gerenciador de lembretes iniciado!!\n");
    printf("====================================\n");
    
-   # pragma omp parallel sections num_threads(thread_count)
+   omp_set_num_threads(4);
+   # pragma omp parallel sections
    {
        #pragma omp section
         Lembrete(m1);
@@ -69,6 +70,11 @@ int main(int argc, char* argv[]) {
         Lembrete(m4);
        
    }
+   
+   free(m1);
+   free(m2);
+   free(m3);
+   free(m4);
    
    return 0; 
 }
